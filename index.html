@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards manager - Smart Loyalty Card Wallet</title>
+    <style>
+        :root {
+            --bg-primary: #0D0E15;
+            --bg-secondary: #16172C;
+            --bg-card: #1c1e38;
+            --accent-cyan: #00E5FF;
+            --accent-purple: #7C4DFF;
+            --accent-pink: #FF1744;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0A5C0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: rgba(13, 14, 21, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            color: var(--text-primary);
+        }
+
+        .logo svg {
+            margin-right: 10px;
+            width: 32px;
+            height: 32px;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-cyan);
+        }
+
+        .hero {
+            padding: 140px 20px 80px;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, #1c1224 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Decorative neon glow circles */
+        .hero::before, .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+        }
+
+        .hero::before {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-purple);
+            top: -50px;
+            left: -100px;
+            opacity: 0.15;
+        }
+
+        .hero::after {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-cyan);
+            bottom: -50px;
+            right: -100px;
+            opacity: 0.15;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 0 0 20px;
+            background: linear-gradient(90deg, #ffffff 20%, var(--accent-cyan) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin: 0 0 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge-link img {
+            height: 56px;
+            transition: transform 0.2s;
+        }
+
+        .badge-link img:hover {
+            transform: scale(1.03);
+        }
+
+        .features {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 50px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--bg-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 30px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(0, 229, 255, 0.2);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 1.25rem;
+            margin: 0 0 10px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .privacy-section {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 80px 20px;
+        }
+
+        .privacy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: var(--bg-primary);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .privacy-container h2 {
+            margin-top: 0;
+            border-bottom: 2px solid var(--accent-purple);
+            padding-bottom: 10px;
+        }
+
+        .privacy-container h3 {
+            color: var(--accent-cyan);
+            margin-top: 30px;
+        }
+
+        footer {
+            background-color: var(--bg-primary);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: var(--accent-cyan);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .tagline {
+                font-size: 1.1rem;
+            }
+            .privacy-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <!-- Fancier icon SVG representation -->
+                <svg viewBox="0 0 108 108">
+                    <rect width="108" height="108" rx="16" fill="#16172C" stroke="url(#grad1)" stroke-width="3" />
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#00E5FF;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#7C4DFF;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <!-- Card -->
+                    <rect x="34" y="37" width="40" height="34" rx="4" fill="none" stroke="#FFFFFF" stroke-width="2.5" />
+                    <!-- Barcode lines -->
+                    <line x1="41" y1="44" x2="41" y2="64" stroke="#00E5FF" stroke-width="2" />
+                    <line x1="46" y1="44" x2="46" y2="64" stroke="#00E5FF" stroke-width="1" />
+                    <line x1="50" y1="44" x2="50" y2="64" stroke="#00E5FF" stroke-width="3" />
+                    <line x1="56" y1="44" x2="56" y2="64" stroke="#00E5FF" stroke-width="1" />
+                    <line x1="60" y1="44" x2="60" y2="64" stroke="#00E5FF" stroke-width="2" />
+                    <line x1="65" y1="44" x2="65" y2="64" stroke="#00E5FF" stroke-width="4" />
+                    <line x1="71" y1="44" x2="71" y2="64" stroke="#00E5FF" stroke-width="1" />
+                    <!-- Laser scan line -->
+                    <line x1="22" y1="54" x2="86" y2="54" stroke="#FF1744" stroke-width="2.5" stroke-linecap="round" />
+                </svg>
+                Cards manager
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#privacy">Privacy Policy</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Cards manager</h1>
+            <p class="tagline">The smart, secure, offline digital wallet for all your loyalty and membership cards.</p>
+            
+            <!-- Play Store coming soon placeholder -->
+            <a href="#" class="badge-link" onclick="alert('App is currently in closed testing. Coming soon to Google Play!'); return false;">
+                <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play">
+            </a>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title">Why use Cards manager?</h2>
+        <div class="grid">
+            <div class="card">
+                <div class="card-icon">📐</div>
+                <h3>Smart Auto-Cropping</h3>
+                <p>Powered by Google ML Kit on-device AI. Automatically detects card borders, crops backgrounds, and straightens perspective for a perfect scan.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔄</div>
+                <h3>Double-Sided Scanning</h3>
+                <p>Easily scan both the front branding and the back barcode in a single flow. Perfect for cards with barcodes printed on the back.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">📊</div>
+                <h3>Digital Barcode View</h3>
+                <p>Automatically decodes barcode value and reconstructs a mathematically perfect high-contrast vector barcode. No more reflection issues at checkouts!</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔆</div>
+                <h3>Max Brightness Scan</h3>
+                <p>Tap on the digital barcode to expand it full screen and automatically set your phone's screen brightness to 100% so laser scanners read it instantly.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔒</div>
+                <h3>100% Offline & Private</h3>
+                <p>All scanned cards and barcodes are stored locally in your app's secure private memory. Your data never leaves your device—no internet required!</p>
+            </div>
+            <div class="card">
+                <div class="card-icon">🔌</div>
+                <h3>Zero Permissions Model</h3>
+                <p>Runs securely via Google Play Services out-of-process, meaning the app doesn't even request direct Camera permission on your device.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="privacy-section" id="privacy">
+        <div class="privacy-container">
+            <h2>Privacy Policy</h2>
+            <p><strong>Last updated: May 26, 2026</strong></p>
+            <p>Sander Vogelzang ("we", "our", or "us") operates the <strong>Cards manager</strong> mobile application (the "App") for Android devices. We are committed to protecting your privacy. This Privacy Policy explains how we handle information in relation to your use of the App.</p>
+            
+            <h3>1. Information Collection and Use</h3>
+            <p><strong>Cards manager is a 100% offline utility app.</strong></p>
+            <ul>
+                <li><strong>No Personal Data Collection</strong>: We do not collect, store, or transmit any personal data, contact details, location information, or device identifiers.</li>
+                <li><strong>Local Storage Only</strong>: All data you add to the App, including store names, scanned card photos, and barcode numbers, is saved <strong>locally and privately</strong> on your device's secure internal storage.</li>
+                <li><strong>No Server Communication</strong>: The App does not connect to the internet, communicate with external servers, or use any cloud databases. Your data never leaves your physical device.</li>
+            </ul>
+
+            <h3>2. Device Camera and Files</h3>
+            <ul>
+                <li><strong>Camera Access</strong>: The App utilizes Google Play Services Document Scanner to capture card images. The App itself does not require or request direct camera permission. The images are captured and processed on-device.</li>
+                <li><strong>File Access</strong>: The App stores scanned card images inside the App's secure private internal storage directory. These files are not accessible by other applications on your device.</li>
+            </ul>
+
+            <h3>3. Third-Party Services</h3>
+            <p>The App uses <strong>Google Play Services</strong> APIs (specifically Google ML Kit for Document Scanning, Barcode Scanning, and Text Recognition). These services process images and scan barcodes <strong>on-device</strong>. No image or scan data is sent to Google's servers.</p>
+
+            <h3>4. Children's Privacy</h3>
+            <p>Our App does not collect any personal information from anyone, including children under the age of 13. The App is safe for users of all ages.</p>
+
+            <h3>5. Changes to This Privacy Policy</h3>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy text on this page. You are advised to review this Privacy Policy periodically for any changes.</p>
+
+            <h3>6. Contact Us</h3>
+            <p>If you have any questions or suggestions about this Privacy Policy, please contact us at: <a href="mailto:sander@example.com">sander@example.com</a></p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Sander Vogelzang. All Rights Reserved.</p>
+        <p>Created with ❤️ for clean checkout experiences.</p>
+    </footer>
+
+</body>
+</html>
